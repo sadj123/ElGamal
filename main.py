@@ -37,4 +37,14 @@ def main():
     
     #print(t==pow(alpha,x,p))
     #print(Elgamal.sig_verification(int(msg_enc.replace(" ","")),r,s,alpha,p,beta))
-main()
+if __name__=='__main__':
+    t= input("Ingrese texto a cifrar: ")
+    p = Elgamal.find_prime(256)
+    alpha = Elgamal.find_primitive_root(p)
+    d,i = Elgamal.priv_key(p)
+    beta=Elgamal.pub_key(alpha,d,p)
+    km = Elgamal.M_key(i,beta,p)
+    msg_enc = Elgamal.encrypt(t,km,i,p,alpha)
+    print("Texto a cifrar: ", t)
+    print("El mensaje cifrado es: ", msg_enc)
+    print("Mensaje decifrado: ", Elgamal.decrypt(msg_enc,p,d))
