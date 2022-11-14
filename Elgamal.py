@@ -1,10 +1,3 @@
-
-"""
-Created on Fri Nov  4 17:59:38 2022
-
-@author: gianc
-"""
-
 import random
 import math
 
@@ -79,17 +72,19 @@ def find_primitive_root(p):
 #=====================================================================================================
 def priv_key(p):
     d = random.randint(2, p-2)
-    i = random.randint(2, p-2)
-    return d,i 
+    return d
 
 #=====================================================================================================
 # Paso 4 Calcular la llave publica
 #=====================================================================================================
 def pub_key(alpha,d,p):
     return pow(alpha,d,p)
-
+# Llave efiemra
+def eph_key(p):
+    i = random.randint(2, p-2)
+    return i 
 #=====================================================================================================
-# Paso 5 LLave efimera y llame de enmascaramiento 
+# Paso 5 LLave efimera y llave de enmascaramiento 
 #=====================================================================================================
 def M_key(i,beta,p):
     
@@ -102,11 +97,13 @@ def M_key(i,beta,p):
 # Funcion que codifica el mensaje de exa a bytes tomando cada bit
 def encode(sPlaintext):
 		byte_array = bytearray(sPlaintext, 'utf-16')
+		
 		z = []
 		k = 256//8
 		j = -1 * k
 		for i in range( len(byte_array) ):
 				if i % k == 0:
+						
 						j += k
 						z.append(0)
 				z[j//k] += byte_array[i]*(2**(8*(i%k)))
@@ -186,15 +183,19 @@ def sig_generation(alpha,p,d,x):
         ke=random.randint(2, p-2)
         if math.gcd(ke,p-1)==1:
             break
+    inv_ke=modinv(ke,(p-1))
     r=pow(alpha,ke,p)
-    s=((x-(d*r))*modinv(ke,p))%(p-1)
-    return (x,r,s)
+    s=((x-(d*r))*inv_ke)%(p-1)
+    if s == 0:
+        sig_generation(alpha,p,d,x)
+    else:
+        return (x,r,s,ke)
 
 #=====================================================================================================
 # Paso 2 verificacion de la firma 
 #=====================================================================================================
-def sig_verification(x,r,s,alpha,p,beta):
-    t = (pow(beta,r)*pow(r,s))%p
+def sig_verification(x,r,s,alpha,p,d,ke):
+    t = pow(alpha,(d*r)+(ke*s),p)
     if t == pow(alpha,x,p):
         return True
     else:
