@@ -6,7 +6,7 @@ client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('127.0.0.1', 55555))
 f = open("llaves.txt", "r")
 pubs = f.read().split(',')
-d=63899831267714702096354733537548228293550434582025808276052753581218716713904
+d=63899831267714702096354733537548228293550434582025808276052753581218716713915
 def receive():
     while True:
         try:
