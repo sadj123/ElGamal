@@ -17,7 +17,7 @@ def broadcast(message):
 def handle(client):
     while True:
         try:
-            message= client.recv(1024)
+            message= client.recv(100000)
             broadcast(message)
         except:
             idx= clients.index(client)
@@ -34,7 +34,7 @@ def receive():
         client, addr= server.accept()
         print(f"Se conectó: str({addr})")
         client.send("Usuario: ".encode('ascii'))
-        nick= client.recv(1024).decode('ascii')
+        nick= client.recv(100000).decode('ascii')
         nicks.append(nick)
         clients.append(client)
         #broadcast(f"{nick} se ha conectado!".encode('ascii'))

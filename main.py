@@ -2,7 +2,7 @@ import Elgamal
 
 def main():
     # Texto a cifrar 
-    texto="wenas este es otro texto de prueba"
+    texto="Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando.Hola como estas, yo la he pasado muy bien pero tu como que no. Porfa no me ignores cuando te estoy hablando."
     # encontramos numero primo de 256 bits
     p = Elgamal.find_prime(256)
     # encontramos un generador del grupo Z_p
@@ -25,6 +25,6 @@ def main():
     
     # verificacion usando la firma digital
     mens=int(msg_enc.replace(" ",""))
-    x,r,s,ke=Elgamal.sig_generation(alpha,p,d,mens)
-    print(Elgamal.sig_verification(x,r,s,alpha,p,d,ke))
+    r,s=Elgamal.sig_generation(alpha,p,d,mens)
+    print(Elgamal.sig_verification(mens,r,s,alpha,p,beta))
 main()

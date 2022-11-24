@@ -33,7 +33,6 @@ def miller_rabin(n):
     return True
 
 
-# iNumBits es la cantidad de bits del numero
 def find_prime(Bits):
 		while(1):
                 # generamos un numero aleatorio 
@@ -50,8 +49,6 @@ def find_prime(Bits):
 				p = p * 2 + 1
 				if miller_rabin(p):
 						return p
-
-
 
 #=====================================================================================================
 # Paso 2 encontrar un generador del grupo 
@@ -84,7 +81,7 @@ def eph_key(p):
     i = random.randint(2, p-2)
     return i 
 #=====================================================================================================
-# Paso 5 LLave efimera y llave de enmascaramiento 
+# Paso 5 llave de enmascaramiento 
 #=====================================================================================================
 def M_key(i,beta,p):
     
@@ -96,8 +93,7 @@ def M_key(i,beta,p):
 #=====================================================================================================
 # Funcion que codifica el mensaje de exa a bytes tomando cada bit
 def encode(sPlaintext):
-		byte_array = bytearray(sPlaintext, 'utf-16')
-		
+		byte_array = bytearray(sPlaintext, 'utf-16')		
 		z = []
 		k = 256//8
 		j = -1 * k
@@ -108,7 +104,7 @@ def encode(sPlaintext):
 						z.append(0)
 				z[j//k] += byte_array[i]*(2**(8*(i%k)))
 		return z
-
+    
 def encrypt(x,km,y,p,alpha):
     z = encode(x)
     cipher_pairs = []
@@ -147,7 +143,7 @@ def decrypt(cipher,p,x):
 
 		cipherArray = cipher.split()
 		if (not len(cipherArray) % 2 == 0):
-				return "Malformed Cipher Text"
+			return "texto malformado"	
 		for i in range(0, len(cipherArray), 2):
 				c = int(cipherArray[i])
 				d = int(cipherArray[i+1])
@@ -189,20 +185,19 @@ def sig_generation(alpha,p,d,x):
     if s == 0:
         sig_generation(alpha,p,d,x)
     else:
-        return (x,r,s,ke)
+        return (r,s)
 
 #=====================================================================================================
 # Paso 2 verificacion de la firma 
 #=====================================================================================================
-def sig_verification(x,r,s,alpha,p,d,ke):
-    t = pow(alpha,(d*r)+(ke*s),p)
+
+    
+def sig_verification(x,r,s,alpha,p,beta):
+    t = (pow(beta,r,p)*pow(r,s,p))%p
     if t == pow(alpha,x,p):
         return True
     else:
         return False
-
-
-    
 
 
     
